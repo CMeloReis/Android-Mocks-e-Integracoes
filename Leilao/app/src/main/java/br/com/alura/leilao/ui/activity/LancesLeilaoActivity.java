@@ -1,5 +1,7 @@
 package br.com.alura.leilao.ui.activity;
 
+import static br.com.alura.leilao.ui.activity.LeilaoConstantes.CHAVE_LEILAO;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,8 +19,6 @@ import br.com.alura.leilao.model.Lance;
 import br.com.alura.leilao.model.Leilao;
 import br.com.alura.leilao.ui.dialog.AvisoDialogManager;
 import br.com.alura.leilao.ui.dialog.NovoLanceDialog;
-
-import static br.com.alura.leilao.ui.activity.LeilaoConstantes.CHAVE_LEILAO;
 
 public class LancesLeilaoActivity extends AppCompatActivity {
 
@@ -93,8 +93,7 @@ public class LancesLeilaoActivity extends AppCompatActivity {
         EnviadorDeLance enviador = new EnviadorDeLance(
                 client,
                 lanceProcessadoListener(),
-                this,
-                new AvisoDialogManager());
+                new AvisoDialogManager(this));
         enviador.envia(leilaoRecebido, lance);
     }
 

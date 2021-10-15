@@ -1,10 +1,5 @@
 package br.com.alura.leilao.api;
 
-import static br.com.alura.leilao.ui.dialog.AvisoDialogManager.mostraAvisoLanceSeguidoDoMesmoUsuario;
-import static br.com.alura.leilao.ui.dialog.AvisoDialogManager.mostraToastFalhaNoEnvio;
-
-import android.content.Context;
-
 import br.com.alura.leilao.api.retrofit.client.LeilaoWebClient;
 import br.com.alura.leilao.api.retrofit.client.RespostaListener;
 import br.com.alura.leilao.exception.LanceMenorQueUltimoLanceException;
@@ -18,16 +13,13 @@ public class EnviadorDeLance {
 
     private final LeilaoWebClient client;
     private final LanceProcessadoListener listener;
-    private final Context context;
     private final AvisoDialogManager manager;
 
     public EnviadorDeLance(LeilaoWebClient client,
                            LanceProcessadoListener listener,
-                           Context context,
                            AvisoDialogManager manager) {
         this.client = client;
         this.listener = listener;
-        this.context = context;
         this.manager = manager;
     }
 
@@ -42,15 +34,15 @@ public class EnviadorDeLance {
 
                 @Override
                 public void falha(String mensagem) {
-                    mostraToastFalhaNoEnvio(context);
+                    manager.mostraToastFalhaNoEnvio();
                 }
             });
         } catch (LanceMenorQueUltimoLanceException exception) {
-            manager.mostraAvisoLanceMenorQueUltimoLance(context);
+            manager.mostraAvisoLanceMenorQueUltimoLance();
         } catch (LanceSeguidoDoMesmoUsuarioException exception) {
-            mostraAvisoLanceSeguidoDoMesmoUsuario(context);
+            manager.mostraAvisoLanceSeguidoDoMesmoUsuario();
         } catch (UsuarioJaDeuCincoLancesException exception) {
-            manager.mostraAvisoUsuarioJaDeuCincoLances(context);
+            manager.mostraAvisoUsuarioJaDeuCincoLances();
         }
     }
 
