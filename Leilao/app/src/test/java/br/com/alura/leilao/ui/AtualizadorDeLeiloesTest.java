@@ -1,13 +1,14 @@
-package br.com.alura.leilao.ui.activity;
+package br.com.alura.leilao.ui;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.verify;
 
 import android.content.Context;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
@@ -21,24 +22,21 @@ import br.com.alura.leilao.api.retrofit.client.RespostaListener;
 import br.com.alura.leilao.model.Leilao;
 import br.com.alura.leilao.ui.recyclerview.adapter.ListaLeilaoAdapter;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
-
 @RunWith(MockitoJUnitRunner.class)
-public class ListaLeilaoActivityTest {
+public class AtualizadorDeLeiloesTest {
 
     @Mock
-    private Context context;
-    @Spy
-    private ListaLeilaoAdapter adapter = new ListaLeilaoAdapter(context);
+    private ListaLeilaoAdapter adapter;
     @Mock
     private LeilaoWebClient client;
+    @Mock
+    private Context context;
 
     @Test
     public void deve_AtualizarListaDeLeiloes_QuandoBuscarLeiloesDaApi() {
-        ListaLeilaoActivity activity = new ListaLeilaoActivity();
-        Mockito.doNothing().when(adapter).atualizaLista();
-        Mockito.doAnswer(new Answer() {
+        AtualizadorDeLeiloes atualizador = new AtualizadorDeLeiloes();
+//        Mockito.doNothing().when(adapter).atualizaLista();funciona para objetos espioes nao executarem metodos reais; nao esta usando o spy mais, entao e desnecessario
+        doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocation) {
                 RespostaListener<List<Leilao>> argument = invocation.getArgument(0);
@@ -48,12 +46,15 @@ public class ListaLeilaoActivityTest {
                 )));
                 return null;
             }
-        }).when(client).todos(ArgumentMatchers.any(RespostaListener.class));
+        }).when(client).todos(any(RespostaListener.class));
 
-        activity.buscaLeiloes(adapter, client);
-        int quantidadeLeiloesDevolvida = adapter.getItemCount();
+        atualizador.buscaLeiloes(adapter, client, context);
 
-        assertThat(quantidadeLeiloesDevolvida, is(2));
+        verify(client).todos(any(RespostaListener.class));
+        verify(adapter).atualiza(new ArrayList<>(Arrays.asList(
+                new Leilao("Computador"),
+                new Leilao("Carro")
+        )));
     }
 
 }
