@@ -15,7 +15,7 @@ public class AtualizadorDeUsuario {
     public AtualizadorDeUsuario(UsuarioDAO dao,
                                 ListaUsuarioAdapter adapter,
                                 RecyclerView recyclerView) {
-        this.dao = dao;
+        this.dao = dao; // faz integração com o banco de dados
         this.adapter = adapter;
         this.recyclerView = recyclerView;
     }

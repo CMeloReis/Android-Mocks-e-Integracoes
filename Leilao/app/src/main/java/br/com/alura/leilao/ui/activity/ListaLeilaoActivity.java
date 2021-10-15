@@ -2,7 +2,6 @@ package br.com.alura.leilao.ui.activity;
 
 import static br.com.alura.leilao.ui.activity.LeilaoConstantes.CHAVE_LEILAO;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
